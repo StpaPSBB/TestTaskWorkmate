@@ -127,3 +127,42 @@ def test_process_logs_average():
     assert data[0][2] == 2
     assert data[0][3] == pytest.approx(0.15)
     assert len(data) == 3
+
+
+def test_process_logs_average_skip():
+    """
+    Tests skipping broken logs in process_logs_average function call.
+    """
+    logs = [
+        {
+            "@timestamp": "2025-06-22T13:57:32+00:00",
+            "status": 200,
+            "request_method": "GET",
+            "response_time": 0.1,
+            "http_user_agent": "..."
+        },
+        {
+            "@timestamp": "2025-06-22T13:57:32+00:00",
+            "status": 200,
+            "url": "/api/test1/...",
+            "request_method": "GET",
+            "http_user_agent": "..."
+        },
+        {
+            "@timestamp": "2025-06-22T13:57:32+00:00",
+            "status": 200,
+            "url": "/api/test2/...",
+            "request_method": "GET",
+            "response_time": 0.3,
+            "http_user_agent": "..."
+        },
+        {
+            "@timestamp": "2025-06-22T13:57:32+00:00",
+            "status": 200,
+            "request_method": "GET",
+            "response_time": 0.4,
+            "http_user_agent": "..."
+        }
+    ]
+    data = process_logs_average(logs)
+    assert len(data) == 1
