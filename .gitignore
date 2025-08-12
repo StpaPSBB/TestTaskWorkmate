@@ -1,0 +1,4 @@
+.coverage
+*.log
+*.pyc
+__pycache__/
