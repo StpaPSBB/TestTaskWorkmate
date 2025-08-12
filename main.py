@@ -93,11 +93,15 @@ def process_logs_average(logs: list[dict[str, Any]],
     """
     Processes logs.
     Creates report data.
+    Skips log if it doesn't contain required keys.
     """
     endpoints = {}
     for log in logs:
-        url = log["url"]
-        response_time = log["response_time"]
+        if "url" not in log or "response_time" not in log:
+            continue
+        else:
+            url = log["url"]
+            response_time = log["response_time"]
         if date_filter is not None:
             log_date = log["@timestamp"][:10]
             if log_date != date_filter:
